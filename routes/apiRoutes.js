@@ -15,10 +15,6 @@ module.exports = function(app) {
     // They won't get this or even be able to access this page if they aren't authed
     res.json("/RepoStuff/loggedIn.html");
   });
-// // ALTERNATIVELY per the documentation we can do this (NEEDS TESTING):
-// app.post('/login', passport.authenticate('local', { 
-//   successRedirect: '/',                                               failureRedirect: '/login' 
-// }));
 
 app.post("/api/logout", passport.authenticate("local"), function(req, res) {
   console.log(req.user);
@@ -40,7 +36,6 @@ app.post("/api/logout", passport.authenticate("local"), function(req, res) {
     }).catch(function(err) {
       console.log(err);
       res.json(err);
-      // res.status(422).json(err.errors[0].message);
     });
   });
 
@@ -86,7 +81,6 @@ app.post("/api/logout", passport.authenticate("local"), function(req, res) {
       }).catch(function(err) {
         console.log(err);
         res.json(err);
-        // res.status(422).json(err.errors[0].message);
       });
     }
   });
@@ -103,13 +97,6 @@ app.post("/api/logout", passport.authenticate("local"), function(req, res) {
         res.json(dbPhonebook);
       });
   });
-
-  // app.post("/api/contacts", (req, res) => {
-  //   // table variable is now available in req.body:
-  //   console.log(req.body.table);
-  //   // always send a response:
-  //   res.json({ ok: true });
-  // });
 
   app.post("/api/contacts", function(req, res) {
     console.log(res.data);
@@ -151,136 +138,4 @@ app.post("/api/logout", passport.authenticate("local"), function(req, res) {
         });
     });
   });
-  // app.get("/cast", function(req, res) {
-  //   // All of the resulting records are stored in the variable "result."
-  //   connection.query("SELECT * FROM actors", function(err, result) {
-  //     var html = "<h1> The Seinfeld Cast Database </h1>";
-  
-  //     html += "<ul>";
-  
-  //     for(var i = 0; i < result.length; i++) {
-  //       html += "<li><p> ID: " + result[i].id + "</p>";
-  //       html += "<p> Name: " + result[i].name + "</p>";
-  //       html += "<p> Coolness Points: " + result[i].coolness_points + "</p>";
-  //       html += "<p> Attitude: " + result[i].attitude + "</p></li>";
-  //     }
-  
-  //     html += "</ul>";
-  
-  //     res.send(html);
-  
-  //   });
-  // });
-
-
-
-  // Get route for retrieving a single Phonebook contact
-  app.get("/api/contact/:id", function(req, res) {
-    db.Phonebook.findOne({
-      where: {
-        id: req.params.id
-      }
-    })
-      .then(function(dbPhonebook) {
-        res.json(dbPhonebook);
-      });
-  });
-
-  // Add sequelize code to update the devoured value
-  app.put("/api/update/", function(req, res) {
-    db.Phonebook.update({ 
-      contact_name: req.body.contact,
-      phone_number: req.body.phone_number,
-      notes: req.body.notes
-    },
-      {
-      where: {
-        id: req.body.id
-      }
-  }).then(function(data) {
-    console.log(data);
-    res.redirect("/api/all");
-    });
-  });
-
-
-    // PUT route for updating posts
-    // app.put("/api/posts", function(req, res) {
-    //   db.Post.update(req.body,
-    //     {
-    //       where: {
-    //         id: req.body.id
-    //       }
-    //     })
-    //     .then(function(dbPost) {
-    //       res.json(dbPost);
-    //     });
-    // });
-// TODO: Create Update contacts Api Put route, as well as a Get Route for a findAll where UserID = req.user.id; test current routes.
-  // POST route for saving a new post
-  // app.post("/api/posts", function(req, res) {
-  //   console.log(req.body);
-  //   db.Post.create({
-  //     title: req.body.title,
-  //     body: req.body.body,
-  //     category: req.body.category
-  //   })
-  //     .then(function(dbPost) {
-  //       res.json(dbPost);
-  //     });
-  // });
-
-//   app.get('/token', (req, res) => {
-//     // put your Twilio API credentials here
-//     const accountSid = 'ACXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX';
-//     const authToken = 'your_auth_token';
-  
-//     // put your Twilio Application Sid here
-//     const appSid = 'APXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX';
-  
-//     const capability = new ClientCapability({
-//       accountSid: accountSid,
-//       authToken: authToken,
-//     });
-//     capability.addScope(
-//       new ClientCapability.OutgoingClientScope({ applicationSid: appSid })
-//     );
-//     capability.addScope(new ClientCapability.IncomingClientScope('joey'));
-//     const token = capability.toJwt();
-  
-//     res.set('Content-Type', 'application/jwt');
-//     res.send(token);
-//   });
-  
-//   app.post('/voice', (req, res) => {
-//     // TODO: Create TwiML response
-//   });
-
 };
-
-
-// HANDLEBARS EXAMPLE VERSION FOR REFERENCE
-// var db = require("../models");
-
-// module.exports = function(app) {
-//   // Get all examples
-//   app.get("/api/examples", function(req, res) {
-//     db.Example.findAll({}).then(function(dbExamples) {
-//       res.json(dbExamples);
-//     });
-//   });
-
-//   // Create a new example
-//   app.post("/api/examples", function(req, res) {
-//     db.Example.create(req.body).then(function(dbExample) {
-//       res.json(dbExample);
-//     });
-//   });
-
-//   // Delete an example by id
-//   app.delete("/api/examples/:id", function(req, res) {
-//     db.Example.destroy({ where: { id: req.params.id } }).then(function(dbExample) {
-//       res.json(dbExample);
-//     });
-//   });
-// };
