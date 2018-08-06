@@ -68,7 +68,7 @@ app.post("/api/logout", passport.authenticate("local"), function(req, res) {
 
   app.post("/api/contact/create", function(req, res) {
     if (!req.user) {
-      res.json("/members");
+      res.json("/loggedin");
     }
     else {
       console.log(req.body);

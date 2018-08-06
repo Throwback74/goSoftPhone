@@ -13,35 +13,38 @@ module.exports = function(app) {
   app.get("/signup", function(req, res) {
     // If the user already has an account send them to the members page
     if (req.user) {
-      res.redirect("/RepoStuff/loggedIn.html");
+      res.redirect("/loggedin");
+    } else {
+      res.sendFile(path.join(__dirname, "../public/signup.html"));
     }
-    res.sendFile(path.join(__dirname, "../public/signup.html"));
   });
 
   app.get("/login", function(req, res) {
     // If the user already has an account send them to the members page
     if (req.user) {
-      res.redirect("/RepoStuff/loggedIn.html");
+      res.redirect("/loggedin");
     }
     res.sendFile(path.join(__dirname, "../public/login.html"));
   });
-// TODO: CREATE REST OF GET ROUTES LIKE THIS:
+
   app.get("/create_contact", function(req, res) {
     // If the user already has an account send them to the members page
     console.log(req.user);
     if (req.user) {
-      res.redirect("/RepoStuff/create_contact.html");
+      return res.sendFile(path.join(__dirname,"../public/RepoStuff/create_contact.html"));
     }
-    res.sendFile(path.join(__dirname, "../public/login.html"));
+    return res.sendFile(path.join(__dirname, "../public/login.html"));
   });
 
   app.get("/loggedin", function(req, res) {
     // If the user already has an account send them to the members page
     console.log(req.user);
     if (req.user) {
-      res.redirect("/RepoStuff/loggedIn.html");
+      return res.sendFile(path.join(__dirname, "../public/RepoStuff/loggedIn.html"));
+    } else {
+      return res.sendFile(path.join(__dirname, "../public/login.html"));
     }
-    res.sendFile(path.join(__dirname, "../public/login.html"));
+    
   });
 
 
@@ -49,9 +52,10 @@ module.exports = function(app) {
     // If the user already has an account send them to the members page
     console.log(req.user);
     if (req.user) {
-      res.redirect("/RepoStuff/contact_list.html");
+     return res.sendFile(path.join(__dirname, "../public/RepoStuff/contact_list.html"));
+    } else {
+      return res.sendFile(path.join(__dirname, "../public/login.html"));
     }
-    res.sendFile(path.join(__dirname, "../public/login.html"));
   });
 
   app.get("/logout", function(req, res) {
@@ -59,14 +63,15 @@ module.exports = function(app) {
     console.log(req.user);
     if (req.user) {
       req.logout();
-      res.redirect("/html5up-fractal/index.html");
+      res.redirect("/");
+    } else {
+     return res.sendFile(path.join(__dirname, "../public/login.html"));
     }
-    res.sendFile(path.join(__dirname, "../public/login.html"));
   });
   // Here we've add our isAuthenticated middleware to this route.
   // If a user who is not logged in tries to access this route they will be redirected to the signup page
-  app.get("/members", isAuthenticated, function(req, res) {
-    res.sendFile(path.join(__dirname, "../public/members.html"));
+  app.get("/loggedin", isAuthenticated, function(req, res) {
+    res.sendFile(path.join(__dirname, "../public/RepoStuff/loggedIn.html"));
   });
 
   
