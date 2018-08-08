@@ -1,5 +1,5 @@
 // Requiring bcrypt for password hashing. Using the bcrypt-nodejs version as the regular bcrypt module
-// sometimes causes errors on Windows machines our number= (714) 695-5738
+// sometimes causes errors on Windows machines 
 var bcrypt = require("bcrypt-nodejs");
 // Creating our User model
 module.exports = function(sequelize, DataTypes) {
@@ -18,12 +18,16 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.STRING,
       allowNull: false
     }
-    // twilio_number: {
-    //   type: DataTypes.INTEGER,
-    //   allowNull: false,
-    //   defaultValue: 7146955738
-    // }
   });
+
+  User.associate = function(models) {
+// Associating User with Phonebooks
+// When a User is deleted, also delete any associated Phonebooks (set up now for future implementation of delete feature)
+    User.hasMany(models.Phonebook, {
+      onDelete: "cascade"
+    });
+  };
+
   // Creating a custom method for our User model. This will check if an unhashed password entered by the user can be compared to the hashed password stored in our database
   User.prototype.validPassword = function(password) {
     return bcrypt.compareSync(password, this.password);

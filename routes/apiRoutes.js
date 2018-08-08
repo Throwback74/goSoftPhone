@@ -13,7 +13,7 @@ module.exports = function(app) {
     // Since we're doing a POST with javascript, we can't actually redirect that post into a GET request
     // So we're sending the user back the route to the members page because the redirect will happen on the front end
     // They won't get this or even be able to access this page if they aren't authed
-    res.json("/RepoStuff/loggedIn.html");
+    res.json("/loggedin");
   });
 
 app.post("/api/logout", passport.authenticate("local"), function(req, res) {
@@ -54,6 +54,7 @@ app.post("/api/logout", passport.authenticate("local"), function(req, res) {
     else {
       // Otherwise send back the user's email and id
       // Sending back a password, even a hashed password, isn't a good idea
+      // Twilio # across the board is (714) 695-5738, when updated with unique #s, use this route to send the user's # to the page.
       res.json({
         email: req.user.email,
         id: req.user.id
@@ -72,12 +73,11 @@ app.post("/api/logout", passport.authenticate("local"), function(req, res) {
         contact_name: req.body.contact_name,
         phone_number: contactNum,
         notes: req.body.notes,
-        userID: req.user.id
+        UserId: req.user.id
       }).then(function(dbPhonebook) {
-        res.json({
-          message: "Contact Created!",
-          data: dbPhonebook
-        });
+        console.log(dbPhonebook);
+        // res.json("/create_contact");
+        res.redirect("/create_contact");
       }).catch(function(err) {
         console.log(err);
         res.json(err);
@@ -90,7 +90,7 @@ app.post("/api/logout", passport.authenticate("local"), function(req, res) {
   app.get("/api/user/:contacts", function(req, res) {
     db.Phonebook.findAll({
       where: {
-        UserID: req.params.contacts
+        UserId: req.params.contacts
       }
     })
       .then(function(dbPhonebook) {
@@ -102,7 +102,7 @@ app.post("/api/logout", passport.authenticate("local"), function(req, res) {
     console.log(res.data);
     db.Phonebook.findAll({
       where: {
-        UserID: req.user.id
+        UserId: req.user.id
       }
     }).then(function(dbPhonebook) {
       console.log(dbPhonebook);

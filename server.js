@@ -23,23 +23,13 @@ app.use(session({ secret: "keyboard cat", resave: true, saveUninitialized: true 
 app.use(passport.initialize());
 app.use(passport.session());
 
-// Handlebars
-// app.engine(
-//   "handlebars",
-//   exphbs({
-//     defaultLayout: "main"
-//   })
-// );
-// app.set("view engine", "handlebars"); If we don't add handlebars we can remove this
-
 // Requiring our routes
 require("./routes/htmlRoutes.js")(app);
 require("./routes/apiRoutes.js")(app);
 
-var syncOptions = { force: false };
+var syncOptions = { force: true };
 
-// If running a test, set syncOptions.force to true
-// clearing the `testdb`
+// If running a test, set syncOptions.force to true to clear the db
 if (process.env.NODE_ENV === "test") {
   syncOptions.force = true;
 }
