@@ -27,7 +27,7 @@ app.use(passport.session());
 require("./routes/htmlRoutes.js")(app);
 require("./routes/apiRoutes.js")(app);
 
-var syncOptions = { force: false };
+var syncOptions = { force: true };
 
 // If running a test, set syncOptions.force to true to clear the db
 if (process.env.NODE_ENV === "test") {
